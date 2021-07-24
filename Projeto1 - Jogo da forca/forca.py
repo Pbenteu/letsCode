@@ -63,13 +63,9 @@ def getLetra(letrasUsadas):
     
   return letra.lower()
 
-# Verifica se a letra escolhida esta na palavra
-def checaLetra(letra, palavra):
-  pass
-
 def renderGame(vidas, letrasUsadas, palavraEscondida):
   # Mostra a forca
-  print(forca[len(forca) - 1 - vidas])
+  print(forca[len(forca) - vidas - 1])
 
   # Mostra as letras encontradas
   print(' '.join(palavraEscondida))
@@ -81,7 +77,6 @@ def renderGame(vidas, letrasUsadas, palavraEscondida):
 # Limpa o terminal
 def clearConsole():
     os.system('cls')
-    os.system('clear')
 
 def initGame():
   palavra = 'paralelepipedo'
@@ -100,13 +95,6 @@ def initGame():
     # Limpa o terminal
     clearConsole()
 
-    # Verifica se o jogo acabou
-    if len(letrasNaoEncontradas) == 0 or vidas == 0:
-      result  = 'ganhou' if vidas > 0 else 'perdeu'
-      print("Você {}! A palavra era: {}".format(result, palavra))
-      fimDeJogo = True
-      break
-
     # Rendezira o game
     renderGame(vidas, letrasUsadas, palavraEscondida)
 
@@ -124,5 +112,12 @@ def initGame():
       for index, value in enumerate(palavra):
         if value == letra:
           palavraEscondida[index] = letra
-
+          
+    # Verifica se o jogo acabou
+    if len(letrasNaoEncontradas) == 0 or vidas == 0:
+      clearConsole()
+      result  = 'ganhou' if vidas > 0 else 'perdeu'
+      print("Você {}! A palavra era: {}".format(result, palavra))
+      fimDeJogo = True
+      
 initGame()
