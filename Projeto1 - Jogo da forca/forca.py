@@ -50,13 +50,6 @@ forca = [
   |      / | \\
   |       / 
   |
-  """,
-  """
-  |--------|
-  |       😵
-  |      / | \\
-  |       / \\
-  |
   """
 ]
 
@@ -97,15 +90,14 @@ def getLetra(letrasUsadas):
 
   # Enquanto o usuario não selecionar uma letra valida continua no loop
   while len(letra) != 1 or not letra.isalpha() or letra.lower() in letrasUsadas:
-    print("[error] Você deve escolher uma letra que ainda não tenha sido usada")
+    print("Você deve escolher uma letra que ainda não tenha sido usada")
     letra = input("Escolha uma letra: ")
     
   return letra.lower()
 
 def renderGame(vidas, letrasUsadas, palavraEscondida):
   # Mostra a forca
-  forcaLength = len(forca) - 1
-  forcaIndice = forcaLength - math.ceil((vidas / (config['vidas'] / forcaLength)))
+  forcaIndice = len(forca) - math.ceil((vidas / (config['vidas'] / len(forca))))
   print(forca[forcaIndice])
 
   # Mostra as letras encontradas
@@ -125,7 +117,7 @@ def renderResult(vidas, palavra):
   print(final)
   print("Você {}! A palavra era: {}".format(result, palavra))
 
-# Limpa o terminal, só funciona no windows
+# Limpa o terminal
 def clearConsole():
     os.system('cls')
 
