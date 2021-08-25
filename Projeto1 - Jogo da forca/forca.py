@@ -111,10 +111,10 @@ def renderGame(vidas, letrasUsadas, palavraEscondida):
 def renderResult(vidas, palavra):
   clearConsole()
 
-  final = desenhoPessoaGanhou if vidas > 0 else desenhoPessoaPerdeu
+  desenhoFinal = desenhoPessoaGanhou if vidas > 0 else desenhoPessoaPerdeu
   result  = 'ganhou' if vidas > 0 else 'perdeu'
 
-  print(final)
+  print(desenhoFinal)
   print("Você {}! A palavra era: {}".format(result, palavra))
 
 # Limpa o terminal
