@@ -5,16 +5,17 @@ import copy
 
 class jogo(object):
 
+  # Configuração basica de variaveis utilizadas no jogo
   def __init__(self):
-    self.x = '❌'
-    self.o = '⭕️'
+    self.player1 = '❌'
+    self.player2 = '⭕️'
     self.tie = 'empate'
     self.square = '⬜️'
     self.squareX = '❎'
     self.squareO = '🅾️'
 
     self.tabuleiro = [
-      [self.x, '', ''],
+      [self.player1, '', ''],
       ['', '', ''],
       ['', '', ''],
     ]
@@ -28,9 +29,9 @@ class jogo(object):
 
     # Altera o icone caso o quadrado seja um quadrado que ja foi selecionado
     squareDisplay = self.square
-    if self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] == self.x:
+    if self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] == self.player1:
       squareDisplay = self.squareX
-    elif self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] == self.o:
+    elif self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] == self.player2:
       squareDisplay = self.squareO
 
     # Adiciona o quadrado de jogada ao tabuleiro
@@ -40,8 +41,8 @@ class jogo(object):
     print("Use as setas direcionais para controlar")
     print("Aperte ENTER para definir a jogada")
     print("Precione ESC para sair")
-    print(f"Você: {self.o}")
-    print(f"Computador: {self.x}")
+    print(f"Você: {self.player2}")
+    print(f"Computador: {self.player1}")
     print(tabulate(novoTabuleiro, tablefmt="fancy_grid"))
 
   # Lida com os comandos vindos do teclado
@@ -74,7 +75,7 @@ class jogo(object):
     # Ao pressionar enter faz a jogada
     elif key == 'enter':
       # 
-      self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] = self.o
+      self.tabuleiro[self.currentSquareCords[0]][self.currentSquareCords[1]] = self.player2
 
       # Jogada do usuario
       self.clearConsole()
@@ -97,21 +98,20 @@ class jogo(object):
   def clearConsole(self):
     os.system('cls' if os.name == 'nt' else 'clear')
 
-  def getPrevisao(self, jogada):
-    if jogada[self.x] == 1:
-      return f"Jogador {self.x} ganhara"
-    elif jogada[self.o] == 1:
-      return f"Jogador {self.o} ganhara"
+  def getTextPrevisao(self, jogada):
+    if jogada[self.player1] == 1:
+      return f"Jogador {self.player1} ganhara"
+    elif jogada[self.player2] == 1:
+      return f"Jogador {self.player2} ganhara"
     else:
       return "Sera empate"
 
-
   def getJogadaComputador(self):
-    jogada = self.simulaJogada(self.tabuleiro, self.x)
+    jogada = self.simulaJogada(self.tabuleiro, self.player1)
     self.clearConsole()
 
-    print(self.getPrevisao(jogada))
-    self.tabuleiro[jogada['jogada'][0]][jogada['jogada'][1]] = self.x
+    print(self.getTextPrevisao(jogada))
+    self.tabuleiro[jogada['jogada'][0]][jogada['jogada'][1]] = self.player1
   
   def getJogadasPossiveis(self, t):
     jogadasPossiveis = []
@@ -133,9 +133,9 @@ class jogo(object):
       
       if not fim:
         # Alterna entre os players
-        newPlayer = self.x
-        if player == self.x:
-          newPlayer = self.o
+        newPlayer = self.player1
+        if player == self.player1:
+          newPlayer = self.player2
 
         # Calcula o proximo nivel
         result = self.simulaJogada(newT, newPlayer)
@@ -149,13 +149,14 @@ class jogo(object):
       else:
         # Se o jogador puder ganhar em uma jogada
         if fim == player:
-          result = {'jogada': jogada, self.x: 0, self.tie: 0, self.o: 0}
+          result = {'jogada': jogada, self.player1: 0, self.tie: 0, self.player2: 0}
           result[player] = 1
 
           return result
 
+        # Se não existir melhor jogada ainda seta essa como a melhor jogada
         if melhorJogada == {}:
-          melhorJogada = {'jogada': jogadasPossiveis[0], self.x: 0, self.tie: 0, self.o: 0}
+          melhorJogada = {'jogada': jogadasPossiveis[0], self.player1: 0, self.tie: 0, self.player2: 0}
           melhorJogada[fim] = 1
 
     return melhorJogada
